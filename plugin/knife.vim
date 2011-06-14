@@ -61,11 +61,21 @@ function! s:NodeList()
   silent %d _
   exec 'silent r! knife node list'
   silent normal! ggdd
-  silent! %s/^\s*//
+  silent! %s/^\s*/node: /
   setlocal buftype=nofile bufhidden=hide noswapfile
   setlocal nomodified
-  syntax match SpecialKey /^gist:/he=e-1
-  exec 'nnoremap <silent> <buffer> <cr> :call <SID>NodeEdit()<cr>'
+  syntax match SpecialKey /^node:/he=e-1
+  exec 'nnoremap <silent> <buffer> <cr> :call <SID>KnifeListAction()<cr>'
+endfunction
+
+function s:KnifeListAction()
+  let line = getline('.')
+  let mx = '^node: \(.*\)\s*'
+  if line =~# mx
+    let node = substitute(line, mx, '\1', '')
+    call s:NodeGet(node)
+    return
+  endif
 endfunction
 
 function! Knode(...)
