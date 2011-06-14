@@ -7,29 +7,20 @@
 " License: BSD
 " Usage:
 "   
-"   :Knode -l
+"   :Knodes
 "     get a list of current registered nodes
 "
-"   :Knode -e node
-"     edit the specified node
-"
-"   :Krole -l
+"   :Kroles
 "     get a list of roles
 "
-"   :Krole -c role
+"   :Krole role
 "     create the specified role
 "
-"   :Krole -e role
-"     edit the specified role
-"
-"   :Kenv -l
+"   :Kenvs
 "     get a list of environments
 "
-"   :Kenv -c env
+"   :Kenv env
 "     create a new environment
-"
-"   :Kenv -e env
-"     edit the specified environment
 "
 "   :Knife ...
 "     pass the command line through to knife
