@@ -59,6 +59,27 @@ function! s:NodeList()
   exec 'nnoremap <silent> <buffer> <cr> :call <SID>KnifeListAction()<cr>'
 endfunction
 
+function! s:NodeGet(node)
+  let winnum = bufwinnr(bufnr(s:bufprefix.a:node))
+  if winnum != -1
+    if winnum != bufwinnr('%')
+      exe "normal \<c-w>".winnum."w"
+    endif
+    setlocal modifiable
+  else
+    exec 'silent split' s:bufprefix.a:node
+  end
+  filetype detect
+  silent %d _
+  normal! Gd_
+  exec 'silent r! knife node show -fj -m ' . a:node
+  setlocal buftype=acwrite bufhidden=delete noswapfile
+  setlocal nomodified
+  doau StdinReadPost <buffer>
+  normal! gg
+  au! BufWriteCmd <buffer> call s:NodeWrite(expand("<amatch>"))
+endfunction
+
 function s:KnifeListAction()
   let line = getline('.')
   let mx = '^node: \(.*\)\s*'
@@ -78,4 +99,5 @@ function! Knode(...)
   endfor
 endfunction
 
-command! -nargs=? -range=% Knode :call Knode(<f-args>)
+command! Knodes :call s:NodeList()
+" command! -nargs=? -range=% Knode :call Knode(<f-args>)
